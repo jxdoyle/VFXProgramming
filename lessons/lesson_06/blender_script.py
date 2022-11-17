@@ -90,21 +90,20 @@ try:
                 frames = frame_increment
                 object.keyframe_insert(data_path="location", frame=frames + offset, group="Translation")
 
+                # Transform Location
                 frames += frame_increment
-                object.location = (random.randint(1, 10), random.randint(1, 3), random.randint(1, 3)) # Translate
+                object.location = (random.randint(1, 3), random.randint(1, 3), random.randint(1, 3)) # Translate
                 console(f"Translation => x:{object.location.x}, y:{object.location.y}, x:{object.location.z}")
                 object.keyframe_insert(data_path="location", frame=frames + offset, group="Translation")
 
                 frames += frame_increment
                 object.rotation_euler = (random.random(), random.random(), random.random()) # Rotation
                 console(f"Rotation => x:{object.rotation_euler.x}, y:{object.rotation_euler.y}, x:{object.rotation_euler.z}")
-                object.keyframe_insert(data_path="rotation_euler", frame=frames + offset, group="Rotation")
-
+                
                 frames += frame_increment
                 object.rotation_euler = (radian_rotation, radian_rotation, radian_rotation) # Rotation
                 console(f"Rotation => x:{object.rotation_euler.x}, y:{object.rotation_euler.y}, x:{object.rotation_euler.z}")
-                object.keyframe_insert(data_path="rotation_euler", frame=frames + offset, group="Rotation")
-
+                
                 frames += frame_increment
                 object.rotation_euler = (radians(30), radians(30), radians(30)) # Rotation
                 console(f"Rotation => x:{object.rotation_euler.x}, y:{object.rotation_euler.y}, x:{object.rotation_euler.z}")
@@ -133,8 +132,7 @@ try:
                 offset += 1
 
     # Save the blender file
-    # Uncomment if you wish to automatically save
-    # bpy.ops.wm.save_as_mainfile(filepath=bpy.data.filepath)
+    bpy.ops.wm.save_as_mainfile(filepath=bpy.data.filepath)
 
     console("ENDS:")
 
