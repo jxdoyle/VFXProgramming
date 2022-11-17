@@ -4,7 +4,7 @@
 #	blender -b automation.blend -o //render//frame_ -F PNG -f 65..140
 
 # File Paramaters
-BLENDER_BIN		:= blender					# name and location of blender binary // exe
+BLENDER_BIN		:= 'C://Program Files/Blender Foundation/Blender 3.1/blender'					# name and location of blender binary // exe
 BLEND_FILE		:= automation.blend			# Name of Blender File (Project file)
 BLEND_SCRIPT	:= integration.py			# Python Script to run
 # render directory
@@ -29,10 +29,12 @@ build:
 	# Create render directory
 	mkdir ${RENDER_DIR}
 
+	# Run python script, create meshes and add keyframes
 	${BLENDER_BIN} -b ${BLEND_FILE} -P ${BLEND_SCRIPT}
 
 	@echo ${RENDER_TARGET}
 
+	# Render each frame of the animation
 	${BLENDER_BIN} -b ${BLEND_FILE} -o ${RENDER_TARGET} -F ${IMG_OUT} -f ${RENDER_FRMS}
 
 	@echo ${MSG_END}
