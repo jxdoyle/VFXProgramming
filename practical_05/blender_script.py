@@ -43,51 +43,26 @@ try:
     layer_collection = bpy.context.view_layer.layer_collection.children[collection.name]
     bpy.context.view_layer.active_layer_collection = layer_collection
 
-    # Add primitive cube
-    # bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
-
-    # Cube shape diagram for reference
-    #
-    #		  (-1.0, +1.0, +1.0)          (+1.0, +1.0, +1.0)
-    #		          [5]                          [6]
-    #		          #-----------------------------#
-    #		         /|                            /|
-    #		        / |                           / |
-    #	  (-1.0, +1.0, -1.0)           (+1.0, +1.0, -1.0)
-    #		  [1] /                         [2] /
-    #		     #-----------------------------#    |
-    #		     |    |                        |    |
-    #		     |    |                        |    |
-    #		     |   [4]                       |   [7]
-    #		  (-1.0, -1.0, +1.0)         (+1.0, -1.0, +1.0)
-    #		     |    #-----------------------------#
-    #		     |   /                         |   /
-    #		     |  /                          |  /
-    #		     | /                           | /
-    #		     |/                            |/
-    #		     #-----------------------------#
-    #		    [0]                           [3]
-    #	(-1.0, -1.0, -1.0)         (+1.0, -1.0, -1.0)
-
-    # Pyramid shape vertices
+    ### Pyramid
+    # Shape vertices
     vertices = [
             # Shape base
-            ( -1.0, -1.0, 0 ), # [0] Vertex 1
-            ( -1.0, +1.0, 0 ), # [1] Vertex 2
-            ( +1.0, +1.0, 0 ), # [2] Vertex 3
-            ( +1.0, -1.0, 0 ), # [3] Vertex 4
+            ( -1.0, -1.0, 0.0 ), # [0] Vertex 1
+            ( -1.0, +1.0, 0.0 ), # [1] Vertex 2
+            ( +1.0, +1.0, 0.0 ), # [2] Vertex 3
+            ( +1.0, -1.0, 0.0 ), # [3] Vertex 4
 
             # Pyramid "point"
-            ( 0, 0, +1.0 ), # [4] Vertex 5
+            ( 0.0,  0.0, +1.0 )  # [4] Vertex 5
     ]
 
     # Define faces (index of vertices above)
     faces = [
-            (0, 1, 2, 3),   # Bottom Face
-            (0, 4, 1),      # Left Face
-            (1, 4, 2),      # Back Face
-            (2, 4, 3),      # Right Face
-            (3, 4, 0),      # Front Face
+            ( 0, 1, 2, 3 ),   # Bottom
+            ( 0, 4, 1 ),      # Left 
+            ( 1, 4, 2 ),      # Back 
+            ( 2, 4, 3 ),      # Right
+            ( 3, 4, 0 )       # Front
     ]
 
     edges = [
@@ -101,12 +76,110 @@ try:
     # Object using the mesh data
     object = bpy.data.objects.new("Pyramid", mesh_data)
 
+    # Link the object in the scene
+    bpy.context.collection.objects.link(object)
+
+    # Set location centered in scene
+    object.location = (0, 0, 0)
+
+    ### Raised Hexagon
+    # Shape vertices
+    vertices = [
+            # Bottom
+            (  0.0, -1.0,  0.0 ), # [0] Vertex 1
+            ( -1.0, -0.5,  0.0 ), # [1] Vertex 2    
+            ( -1.0,  0.5,  0.0 ), # [2] Vertex 3    
+            (  0.0, +1.0,  0.0 ), # [3] Vertex 4    
+            ( +1.0, +0.5,  0.0 ), # [4] Vertex 5   
+            ( +1.0, -0.5,  0.0 ), # [5] Vertex 6
+
+            # Top
+            (  0.0, -1.0, +1.0 ), # [6] Vertex 7
+            ( -1.0, -0.5, +1.0 ), # [7] Vertex 8   
+            ( -1.0, +0.5, +1.0 ), # [8] Vertex 9   
+            (  0.0, +1.0, +1.0 ), # [9] Vertex 10   
+            ( +1.0, +0.5, +1.0 ), # [10] Vertex 11  
+            ( +1.0, -0.5, +1.0 )  # [11] Vertex 12
+    ]
+
+    # Define faces (index of vertices above)
+    faces = [
+            ( 0, 1, 2, 3, 4, 5),   # Bottom
+            ( 0, 1, 7, 6 ),        # Front left
+            ( 1, 2, 8, 7 ),        # Left
+            ( 2, 3, 9, 8 ),        # Back left
+            ( 3, 4, 10, 9 ),       # Back right
+            ( 4, 5, 11, 10 ),      # Right
+            ( 5, 0, 6, 11 ),       # Front right
+            ( 6, 7, 8, 9, 10, 11 ) # Top
+    ]
+
+    edges = [
+        # we will define Edges later
+    ]
+
+    # Create mesh
+    mesh_data = bpy.data.meshes.new("Raised Hexagon")
+    mesh_data.from_pydata(vertices, edges, faces)
+    
+    # Object using the mesh data
+    object = bpy.data.objects.new("Raised Hexagon", mesh_data)
+
+    # Link the object in the scene
+    bpy.context.collection.objects.link(object)
+
+    # Set location next to previous shape on Y axis
+    object.location = (0, 2, 0)
+
+    ### Raised Pyramid 
+    # Shape vertices
+    vertices = [
+            # Shape base/cube
+            ( -1.0, -1.0,  0.0 ), # [0] Vertex 1
+            ( -1.0, +1.0,  0.0 ), # [1] Vertex 2
+            ( +1.0, +1.0,  0.0 ), # [2] Vertex 3
+            ( +1.0, -1.0,  0.0 ), # [3] Vertex 4
+            ( -1.0, -1.0, +1.0 ), # [4] Vertex 1
+            ( -1.0, +1.0, +1.0 ), # [5] Vertex 2
+            ( +1.0, +1.0, +1.0 ), # [6] Vertex 3
+            ( +1.0, -1.0, +1.0 ), # [7] Vertex 4
+
+            # Pyramid "point"
+            (  0.0,  0.0, +2.0 )  # [8] Vertex 5
+    ]
+
+    # Define faces (index of vertices above)
+    faces = [
+            # Lower points
+            ( 0, 1, 2, 3 ),   # Bottom 
+            ( 0, 1, 5, 4 ),   # Left 
+            ( 1, 2, 6, 5 ),   # Back 
+            ( 2, 3, 7, 6 ),   # Right 
+            ( 3, 0, 4, 7 ),   # Front 
+
+            # Upper points
+            ( 4, 8, 5 ),      # Left 
+            ( 5, 8, 6 ),      # Back 
+            ( 6, 8, 7 ),      # Right 
+            ( 7, 8, 4 )       # Front
+    ]
+
+    edges = [
+        # we will define Edges later
+    ]
+
+    # Create mesh
+    mesh_data = bpy.data.meshes.new("Raised Pyramid")
+    mesh_data.from_pydata(vertices, edges, faces)
+
+    # Object using the mesh data
+    object = bpy.data.objects.new("Raised Pyramid", mesh_data)
+
     # Link the Object in the Scene
     bpy.context.collection.objects.link(object)
 
-    # Add object to collection
-    # object.location = (0, 0, 0)
-
+    # Set location next to previous shape on the Y axis
+    object.location = (0, 4, 0)
 
     console("Accessing Data-Blocks")
     console("Accessing Scene Collection")
@@ -118,8 +191,8 @@ try:
     # Setup variables
     x = 1
     y = 1
-    rows = 10
-    columns = 10
+    rows = 3
+    columns = 9
 
     # Select shapes
     for obj in bpy.context.scene.objects:
@@ -128,7 +201,7 @@ try:
 
     # Duplicate shapes into a row
     while y < rows:
-        bpy.ops.object.duplicate_move(TRANSFORM_OT_translate={"value":(0, 2, 0)})
+        bpy.ops.object.duplicate_move(TRANSFORM_OT_translate={"value":(0, 6, 0)})
         y += 1
     
     # Select entire row
