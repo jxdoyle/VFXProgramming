@@ -34,7 +34,7 @@ try:
 
     # Add custom collection, rename it and add it as a scene child
     collection = bpy.data.collections.new('Custom Collection')
-    collection.name = "Cubes"
+    collection.name = "Shapes"
 
     # Add the Collection to the Scene
     bpy.context.scene.collection.children.link(collection)
@@ -46,26 +46,48 @@ try:
     # Add primitive cube
     # bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
 
-    # Cube shape vertices
+    # Cube shape diagram for reference
+    #
+    #		  (-1.0, +1.0, +1.0)          (+1.0, +1.0, +1.0)
+    #		          [5]                          [6]
+    #		          #-----------------------------#
+    #		         /|                            /|
+    #		        / |                           / |
+    #	  (-1.0, +1.0, -1.0)           (+1.0, +1.0, -1.0)
+    #		  [1] /                         [2] /
+    #		     #-----------------------------#    |
+    #		     |    |                        |    |
+    #		     |    |                        |    |
+    #		     |   [4]                       |   [7]
+    #		  (-1.0, -1.0, +1.0)         (+1.0, -1.0, +1.0)
+    #		     |    #-----------------------------#
+    #		     |   /                         |   /
+    #		     |  /                          |  /
+    #		     | /                           | /
+    #		     |/                            |/
+    #		     #-----------------------------#
+    #		    [0]                           [3]
+    #	(-1.0, -1.0, -1.0)         (+1.0, -1.0, -1.0)
+
+    # Pyramid shape vertices
     vertices = [
-            ( -1.0,   -1.0,   -1.0 ), # [0] Vertex 1
-            ( -1.0,   +1.0,   -1.0 ), # [1] Vertex 2
-            ( +1.0,   +1.0,   -1.0 ), # [2] Vertex 3
-            ( +1.0,   -1.0,   -1.0 ), # [3] Vertex 4
-            ( -1.0,   -1.0,   +1.0 ), # [4] Vertex 5
-            ( -1.0,   +1.0,   +1.0 ), # [5] Vertex 6
-            ( +1.0,   +1.0,   +1.0 ), # [6] Vertex 7
-            ( +1.0,   -1.0,   +1.0 ), # [7] Vertex 8
+            # Shape base
+            ( -1.0, -1.0, 0 ), # [0] Vertex 1
+            ( -1.0, +1.0, 0 ), # [1] Vertex 2
+            ( +1.0, +1.0, 0 ), # [2] Vertex 3
+            ( +1.0, -1.0, 0 ), # [3] Vertex 4
+
+            # Pyramid "point"
+            ( 0, 0, +1.0 ), # [4] Vertex 5
     ]
 
     # Define faces (index of vertices above)
     faces = [
-            (0, 1, 2, 3), # Front Face
-            (7, 6, 5, 4), # Back Face
-            (4, 5, 1, 0), # Left Face
-            (7, 4, 0, 3), # Bottom Face
-            (6, 7, 3, 2), # Right Face
-            (5, 6, 2, 1), # Top Face
+            (0, 1, 2, 3),   # Bottom Face
+            (0, 4, 1),      # Left Face
+            (1, 4, 2),      # Back Face
+            (2, 4, 3),      # Right Face
+            (3, 4, 0),      # Front Face
     ]
 
     edges = [
@@ -73,17 +95,17 @@ try:
     ]
 
     # Create mesh
-    mesh_data = bpy.data.meshes.new("mesh_from_data")
+    mesh_data = bpy.data.meshes.new("Pyramid")
     mesh_data.from_pydata(vertices, edges, faces)
     
     # Object using the mesh data
-    object = bpy.data.objects.new("mesh_object", mesh_data)
+    object = bpy.data.objects.new("Pyramid", mesh_data)
 
     # Link the Object in the Scene
     bpy.context.collection.objects.link(object)
 
     # Add object to collection
-    object.location =(0, 0, 0)
+    # object.location = (0, 0, 0)
 
 
     console("Accessing Data-Blocks")
@@ -99,12 +121,12 @@ try:
     rows = 10
     columns = 10
 
-    # Select cube
+    # Select shapes
     for obj in bpy.context.scene.objects:
                 if obj.type == 'MESH':
                     obj.select_set(True)
 
-    # Duplicate cube into a row
+    # Duplicate shapes into a row
     while y < rows:
         bpy.ops.object.duplicate_move(TRANSFORM_OT_translate={"value":(0, 2, 0)})
         y += 1
@@ -120,11 +142,11 @@ try:
         x += 1
 
     # Create array
-    cubes = bpy.data.collections["Cubes"].objects
+    shapes = bpy.data.collections["Shapes"].objects
     offset = 0
 
     # Add offset animations
-    for i in cubes:
+    for i in shapes:
         i.scale = [0,0,0]
         i.keyframe_insert(data_path = "scale", frame = 1 + offset)
         i.scale = [1,1,5]
