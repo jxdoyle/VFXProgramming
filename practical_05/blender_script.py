@@ -43,8 +43,48 @@ try:
     layer_collection = bpy.context.view_layer.layer_collection.children[collection.name]
     bpy.context.view_layer.active_layer_collection = layer_collection
 
-    # Add initial cube
-    obj = bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
+    # Add primitive cube
+    # bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
+
+    # Cube shape vertices
+    vertices = [
+            ( -1.0,   -1.0,   -1.0 ), # [0] Vertex 1
+            ( -1.0,   +1.0,   -1.0 ), # [1] Vertex 2
+            ( +1.0,   +1.0,   -1.0 ), # [2] Vertex 3
+            ( +1.0,   -1.0,   -1.0 ), # [3] Vertex 4
+            ( -1.0,   -1.0,   +1.0 ), # [4] Vertex 5
+            ( -1.0,   +1.0,   +1.0 ), # [5] Vertex 6
+            ( +1.0,   +1.0,   +1.0 ), # [6] Vertex 7
+            ( +1.0,   -1.0,   +1.0 ), # [7] Vertex 8
+    ]
+
+    # Define faces (index of vertices above)
+    faces = [
+            (0, 1, 2, 3), # Front Face
+            (7, 6, 5, 4), # Back Face
+            (4, 5, 1, 0), # Left Face
+            (7, 4, 0, 3), # Bottom Face
+            (6, 7, 3, 2), # Right Face
+            (5, 6, 2, 1), # Top Face
+    ]
+
+    edges = [
+        # we will define Edges later
+    ]
+
+    # Create mesh
+    mesh_data = bpy.data.meshes.new("mesh_from_data")
+    mesh_data.from_pydata(vertices, edges, faces)
+    
+    # Object using the mesh data
+    object = bpy.data.objects.new("mesh_object", mesh_data)
+
+    # Link the Object in the Scene
+    bpy.context.collection.objects.link(object)
+
+    # Add object to collection
+    object.location =(0, 0, 0)
+
 
     console("Accessing Data-Blocks")
     console("Accessing Scene Collection")
