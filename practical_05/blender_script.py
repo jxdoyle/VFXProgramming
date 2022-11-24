@@ -29,9 +29,6 @@ try:
     result = bpy.data.collections
     console(f"Collections: {result}")
 
-    for object in result:
-        console(f"Collection Name: {object.name}")
-
     # Add custom collection, rename it and add it as a scene child
     collection = bpy.data.collections.new('Custom Collection')
     collection.name = "Shapes"
@@ -217,18 +214,51 @@ try:
     # Create array
     shapes = bpy.data.collections["Shapes"].objects
     offset = 0
-
+ 
     # Add offset animations
-    for i in shapes:
-        i.scale = [0,0,0]
-        i.keyframe_insert(data_path = "scale", frame = 1 + offset)
-        i.scale = [1,1,5]
-        i.keyframe_insert(data_path = "scale", frame = 50 + offset)
-        i.scale = [1,1,.5]
-        i.keyframe_insert(data_path = "scale", frame = 70 + offset)
-        i.scale = [1,1,1]
-        i.keyframe_insert(data_path = "scale", frame = 80 + offset)
+    for object in shapes:
+        object.scale = [0,0,0]
+        object.keyframe_insert(data_path = "scale", frame = 1 + offset)
+        object.scale = [1,1,5]
+        object.keyframe_insert(data_path = "scale", frame = 50 + offset)
+        object.scale = [1,1,.5]
+        object.keyframe_insert(data_path = "scale", frame = 70 + offset)
+        object.scale = [1,1,1]
+        object.keyframe_insert(data_path = "scale", frame = 80 + offset)
+
         offset += 1
+    
+
+    # Add object for camera to track
+    bpy.ops.object.empty_add()
+    empty = bpy.context.active_object
+
+    empty.location = (-15,60,0)
+    empty.keyframe_insert(data_path = "location", frame = 1)
+
+    empty.location = (-35,40,0) 
+    empty.keyframe_insert(data_path = "location", frame = 140)
+
+    # Add camera
+    camera_data = bpy.data.cameras.new(name = 'Animation Camera')
+    camera_object = bpy.data.objects.new('Animation Camera', camera_data)
+    bpy.context.scene.collection.objects.link(camera_object)
+
+    camera_object.location.x = 18.0
+    camera_object.location.y = -23.0
+    camera_object.location.z = 7
+
+    camera_object.rotation_euler = (radians(64),radians(0),radians(47))
+
+    camera_object.constraints.new(type='TRACK_TO')
+    camera_object.constraints["Track To"].target = empty
+
+    # As the camera is created in script the Blender file
+    # requires an active camera for the scene to render animation
+    # below sets the active camera
+    # camera_object = bpy.context.scene.camera
+    bpy.context.scene.camera = camera_object
+
 
     # Save the blender file
     # Uncomment if you wish to automatically save
