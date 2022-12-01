@@ -50,7 +50,7 @@ vertices = [
         ( -1.0,   -1.0,   +1.0 ), # [4] Vertex 5
         ( -1.0,   +1.0,   +1.0 ), # [5] Vertex 6
         ( +1.0,   +1.0,   +1.0 ), # [6] Vertex 7
-        ( +1.0,   -1.0,   +1.0 ), # [7] Vertex 8
+        ( +1.0,   -1.0,   +1.0 )  # [7] Vertex 8
 ]
 
 # Define faces (index of vertices above)
@@ -60,7 +60,7 @@ faces = [
         (4, 5, 1, 0), # Left Face
         (7, 4, 0, 3), # Bottom Face
         (6, 7, 3, 2), # Right Face
-        (5, 6, 2, 1), # Top Face
+        (5, 6, 2, 1)  # Top Face
 ]
 
 edges = [
@@ -142,8 +142,6 @@ try:
     for result in bpy.data.collections:
         if result.name == collection.name:
             for object in result.objects:
-                
-                object.modifiers.new("Scripted Modifier","SOLIDIFY")
 
                 # Starting Location
                 frames = frame_increment

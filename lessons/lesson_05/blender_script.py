@@ -84,8 +84,6 @@ try:
         if result.name == collection.name:
             for object in result.objects:
                 
-                object.modifiers.new("Scripted Modifier","SOLIDIFY")
-
                 # Starting Location
                 frames = frame_increment
                 object.keyframe_insert(data_path="location", frame=frames + offset, group="Translation")
