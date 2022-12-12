@@ -12,7 +12,7 @@ RENDER_DIR		:= render
 # output frame image name prefix
 FRAMES			:= frame_			
 IMG_OUT			:= PNG						# output frame image type
-RENDER_FRMS		:= 0..180					# edit frames required
+RENDER_FRMS		:= 0..140					# edit frames required
 # Render Target
 RENDER_TARGET	:= //${RENDER_DIR}//${FRAMES}
 
@@ -44,3 +44,4 @@ build:
 clean:
 	@echo ${MSG_CLEAN}
 	rm -rf ${RENDER_DIR} || true
+
