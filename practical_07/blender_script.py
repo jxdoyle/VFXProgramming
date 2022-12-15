@@ -17,7 +17,7 @@ from console_blender import *       # After a reload import all the functions of
 console("STARTS:")
 
 # turn on bloom setting 
-# needed for emission/glow effects
+# needed for emission effects
 bpy.context.scene.render.engine = 'BLENDER_EEVEE'
 bpy.context.scene.eevee.use_bloom = True
 
@@ -62,7 +62,73 @@ def EmissionShader(name, red, green, blue):
 
     return material
 
+# function to create transparent shader
+def TransparentShader(name, red, green, blue):
+    material = createMaterial(name)
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
 
+    # Output to the Material Output Node
+    output = nodes.new(type='ShaderNodeOutputMaterial')
+    shader = nodes.new(type='ShaderNodeBsdfTransparent')
+    nodes["Transparent BSDF"].inputs[0].default_value = (red, green, blue, 1)
+    
+    # This links the output of the Emission Shader
+    # to the Input of the Material Output Shader
+    links.new(shader.outputs[0], output.inputs[0])
+
+    return material
+
+# function to create glossy shader
+def GlossyShader(name, red, green, blue):
+    material = createMaterial(name)
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
+
+    # Output to the Material Output Node
+    output = nodes.new(type='ShaderNodeOutputMaterial')
+    shader = nodes.new(type='ShaderNodeBsdfGlossy')
+    nodes["Glossy BSDF"].inputs[0].default_value = (red, green, blue, 1)
+    
+    # This links the output of the Emission Shader
+    # to the Input of the Material Output Shader
+    links.new(shader.outputs[0], output.inputs[0])
+
+    return material
+
+# function to create velvet shader
+def VelvetShader(name, red, green, blue):
+    material = createMaterial(name)
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
+
+    # Output to the Material Output Node
+    output = nodes.new(type='ShaderNodeOutputMaterial')
+    shader = nodes.new(type='ShaderNodeBsdfVelvet')
+    nodes["Velvet BSDF"].inputs[0].default_value = (red, green, blue, 1)
+    
+    # This links the output of the Emission Shader
+    # to the Input of the Material Output Shader
+    links.new(shader.outputs[0], output.inputs[0])
+
+    return material
+
+# function to create toon shader
+def ToonShader(name, red, green, blue):
+    material = createMaterial(name)
+    nodes = material.node_tree.nodes
+    links = material.node_tree.links
+
+    # Output to the Material Output Node
+    output = nodes.new(type='ShaderNodeOutputMaterial')
+    shader = nodes.new(type='ShaderNodeBsdfToon')
+    nodes["Toon BSDF"].inputs[0].default_value = (red, green, blue, 1)
+    
+    # This links the output of the Emission Shader
+    # to the Input of the Material Output Shader
+    links.new(shader.outputs[0], output.inputs[0])
+
+    return material
 
 # Catch any errors
 try:    
@@ -301,9 +367,6 @@ try:
 
     # Sets the active camera
     bpy.context.scene.camera = camera_object
-
-
-
     
     # Selecting objects by name and applying effects
     ### Pyramids
@@ -330,7 +393,7 @@ try:
         #modifier = object.modifiers.new('Wireframe', 'WIREFRAME')
         #modifier.thickness = 0.1
         # Add material
-        material = EmissionShader("Cyan_Shader_Emission", 0, 255, 255)
+        material = TransparentShader("Shader_Transparent", 0, 0, 0)
 
         # Check if Object has already been assigned a material
         if object.data.materials:
@@ -347,7 +410,7 @@ try:
         modifier = object.modifiers.new('Wireframe', 'WIREFRAME')
         modifier.thickness = 0.1
         # Add material
-        material = EmissionShader("Ghost_White_Shader_Emission", 248,248,255)
+        material = ToonShader("Ghost_White_Shader_Toon", 248,248,255)
 
         # Check if Object has already been assigned a material
         if object.data.materials:
@@ -363,7 +426,7 @@ try:
         modifier = object.modifiers.new('Wireframe', 'WIREFRAME')
         modifier.thickness = 0.1
         # Add material
-        material = EmissionShader("Deep_Sky_Blue_Shader_Emission", 0, 191, 255)
+        material = VelvetShader("Deep_Sky_Blue_Shader_Velvet", 0, 191, 255)
 
         # Check if Object has already been assigned a material
         if object.data.materials:
@@ -380,7 +443,7 @@ try:
         modifier = object.modifiers.new('Wireframe', 'WIREFRAME')
         modifier.thickness = 0.1
         # Add material
-        material = EmissionShader("Magenta_Shader_Emission", 255, 0, 255)
+        material = GlossyShader("Magenta_Shader_Glossy", 255, 0, 255)
 
         # Check if Object has already been assigned a material
         if object.data.materials:
@@ -404,6 +467,13 @@ try:
             object.data.materials[0] = material
         else:
             object.data.materials.append(material)
+
+    # Add a light
+    light_data = bpy.data.lights.new(name="Point Light", type='POINT')
+    light_object = bpy.data.objects.new(name="Point Light", object_data=light_data)
+    light_data.energy = 100 # 100 Watts
+    bpy.context.scene.collection.objects.link(light_object)
+    light_object.location = camera_object.location
 
     # Save the blender file
     # Uncomment if you wish to automatically save
