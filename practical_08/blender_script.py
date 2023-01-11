@@ -118,10 +118,13 @@ try:
     ]
 
     edges = [
+            # Bottom
             ( 0, 1 ),
             ( 1, 2 ),
             ( 2, 3 ),
             ( 3, 0 ),
+
+            # Point
             ( 0, 4 ),
             ( 1, 4 ),
             ( 2, 4 ),
@@ -246,18 +249,25 @@ try:
     ]
 
     edges = [
+            # Bottom
             ( 0, 1 ),
             ( 1, 2 ),
             ( 2, 3 ),
             ( 3, 0 ),
+
+            # Sides
             ( 0, 4 ),
             ( 1, 5 ),
             ( 2, 6 ),
             ( 3, 7 ),
+
+            # Top
             ( 4, 5 ),
             ( 5, 6 ),
             ( 6, 7 ),
             ( 7, 4 ),
+
+            # Point
             ( 4, 8 ),
             ( 5, 8 ),
             ( 6, 8 ),
@@ -287,8 +297,8 @@ try:
     # Setup variables
     x = 1
     y = 1
-    rows = 2
-    columns = 6
+    rows = 1
+    columns = 3
 
     # Select shapes
     for obj in bpy.context.scene.objects:
@@ -355,7 +365,7 @@ try:
     
     # Selecting objects by name and applying effects
     ### Pyramids
-    for i in ("Pyramid", "Pyramid.002", "Pyramid.004", "Pyramid.006", "Pyramid.008", "Pyramid.010"):
+    for i in ("Pyramid", "Pyramid.001", "Pyramid.002"):
         object = bpy.context.scene.objects.get(i)
         if object: obj.select_set(True)
         # Add material
@@ -368,21 +378,8 @@ try:
         #else:
         #    object.data.materials.append(material)
 
-    for i in ("Pyramid.001", "Pyramid.003", "Pyramid.005", "Pyramid.007", "Pyramid.009", "Pyramid.011"):
-        object = bpy.context.scene.objects.get(i)
-        if object: obj.select_set(True)
-        # Add material
-        #material = TransparentShader("Shader_Transparent", 0, 0, 0)
-
-        # Check if Object has already been assigned a material
-        #if object.data.materials:
-            # Assign to first material slot
-        #    object.data.materials[0] = material
-        #else:
-        #    object.data.materials.append(material)
-
     ### Raised Hexagon
-    for i in ("Raised Hexagon", "Raised Hexagon.002", "Raised Hexagon.004", "Raised Hexagon.006", "Raised Hexagon.008", "Raised Hexagon.010"):
+    for i in ("Raised Hexagon", "Raised Hexagon.001", "Raised Hexagon.002"):
         object = bpy.context.scene.objects.get(i)
         if object: obj.select_set(True)
         # Add material
@@ -395,21 +392,8 @@ try:
         #else:
         #    object.data.materials.append(material)
 
-    for i in ("Raised Hexagon.001", "Raised Hexagon.003", "Raised Hexagon.005", "Raised Hexagon.007", "Raised Hexagon.009", "Raised Hexagon.011"):
-        object = bpy.context.scene.objects.get(i)
-        if object: obj.select_set(True)
-        # Add material
-        #material = VelvetShader("Deep_Sky_Blue_Shader_Velvet", 0, 191, 255)
-
-        # Check if Object has already been assigned a material
-        #if object.data.materials:
-            # Assign to first material slot
-        #    object.data.materials[0] = material
-        #else:
-        #    object.data.materials.append(material)
-
     ### Raised Pyramids
-    for i in ("Raised Pyramid", "Raised Pyramid.002", "Raised Pyramid.004", "Raised Pyramid.006", "Raised Pyramid.008", "Raised Pyramid.010"):
+    for i in ("Raised Pyramid", "Raised Pyramid.001", "Raised Pyramid.002"):
         object = bpy.context.scene.objects.get(i)
         if object: obj.select_set(True)
         # Add material
@@ -422,25 +406,13 @@ try:
         #else:
         #    object.data.materials.append(material)
 
-    for i in ("Raised Pyramid.001", "Raised Pyramid.003", "Raised Pyramid.005", "Raised Pyramid.007", "Raised Pyramid.009", "Raised Pyramid.011"):
-        object = bpy.context.scene.objects.get(i)
-        if object: obj.select_set(True)
-        # Add material
-        #material = EmissionShader("Yellow_Shader_Emission", 255, 255, 0)
-
-        # Check if Object has already been assigned a material
-        #if object.data.materials:
-            # Assign to first material slot
-        #    object.data.materials[0] = material
-        #else:
-        #    object.data.materials.append(material)
-
     # Add a light
-    light_data = bpy.data.lights.new(name="Point Light", type='POINT')
-    light_object = bpy.data.objects.new(name="Point Light", object_data=light_data)
+    light_data = bpy.data.lights.new(name="Light", type='SUN')
+    light_object = bpy.data.objects.new(name="Light", object_data=light_data)
     light_data.energy = 100 # 100 Watts
+    light_data.angle = 0.58863
+
     bpy.context.scene.collection.objects.link(light_object)
-    light_object.location = camera_object.location
 
     # Save the blender file
     # Uncomment if you wish to automatically save

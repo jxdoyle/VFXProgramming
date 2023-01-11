@@ -1,7 +1,7 @@
 # Basic Build
 # build:
 #	blender -b automation.blend -P integration.py
-#	blender -b automation.blend -o //render//frame_ -F PNG -f 0..180
+#	blender -b automation.blend -o //render//frame_ -F PNG -f 0..120
 
 # File Paramaters
 BLENDER_BIN		:= 'C://Program Files/Blender Foundation/Blender 3.1/blender'	# name and location of blender binary // exe
@@ -12,7 +12,7 @@ RENDER_DIR		:= render
 # output frame image name prefix
 FRAMES			:= frame_			
 IMG_OUT			:= PNG						# output frame image type
-RENDER_FRMS		:= 0..200					# edit frames required
+RENDER_FRMS		:= 0..120					# edit frames required
 # Render Target
 RENDER_TARGET	:= //${RENDER_DIR}//${FRAMES}
 
