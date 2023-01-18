@@ -1,7 +1,7 @@
 # File Paramaters
-BLENDER_BIN		:= 'C://Program Files/Blender Foundation/Blender 3.1/blender'	# name and location of blender binary // exe
-BLEND_FILE		:= vfx_production.blend											# Name of Blender File (Project file)
-BLEND_SCRIPT	:= load_script.py												# Python Script to run
+BLENDER_BIN		:= blender					# name and location of blender binary // exe
+BLEND_FILE		:= vfx_production.blend		# Name of Blender File (Project file)
+BLEND_SCRIPT	:= load_script.py			# Python Script to run
 
 # Progress Messages
 MSG_START	:= "Scene Build Started"

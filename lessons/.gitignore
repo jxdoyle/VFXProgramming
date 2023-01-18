@@ -1,0 +1,19 @@
+# Ignore the following files
+
+# Byte-compiled
+__pycache__/
+
+# Compiled Python bytecode
+*.py[cod]
+
+# Log files
+*.log
+
+# CSV Files
+*.csv
+
+# Ignore older blend files
+*.blend[1-9]
+
+# Ignore render
+render/
